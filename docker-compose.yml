@@ -2,7 +2,7 @@ version: "3.7"
 services:
   mongodb:
     image: mongo:6.0.6
-    container_name: 'mongo'
+    container_name: "mongo"
     restart: always
     ports:
       - 27017:27017
@@ -15,7 +15,7 @@ services:
       - backend_services
   rabbitmq:
     image: rabbitmq:3.11.17-management-alpine
-    container_name: 'rabbitmq'
+    container_name: "rabbitmq"
     restart: always
     environment:
       - "RABBITMQ_DEFAULT_USER=username"
@@ -34,12 +34,20 @@ services:
       - backend_services
   order-service:
     image: safalafas/order-service:latest
-    container_name: 'order-service'
+    container_name: "order-service"
     restart: always
     ports:
       - 3000:3000
     healthcheck:
-      test: ["CMD", "wget", "-O", "/dev/null", "-q", "http://order-service:3000/health"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "-O",
+          "/dev/null",
+          "-q",
+          "http://order-service:3000/health",
+        ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -57,12 +65,20 @@ services:
         condition: service_healthy
   makeline-service:
     image: safalafas/makeline-service:latest
-    container_name: 'makeline-service'
+    container_name: "makeline-service"
     restart: always
     ports:
       - 3001:3001
     healthcheck:
-      test: ["CMD", "wget", "-O", "/dev/null", "-q", "http://makeline-service:3001/health"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "-O",
+          "/dev/null",
+          "-q",
+          "http://makeline-service:3001/health",
+        ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -83,12 +99,20 @@ services:
         condition: service_healthy
   product-service:
     image: safalafas/product-service:latest
-    container_name: 'product-service'
+    container_name: "product-service"
     restart: always
     ports:
       - 3002:3002
     healthcheck:
-      test: ["CMD", "wget", "-O", "/dev/null", "-q", "http://product-service:3002/health"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "-O",
+          "/dev/null",
+          "-q",
+          "http://product-service:3002/health",
+        ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -96,7 +120,7 @@ services:
       - backend_services
   virtual-customer:
     image: safalafas/virtual-customer:latest
-    container_name: 'virtual-customer'
+    container_name: "virtual-customer"
     restart: always
     environment:
       - ORDER_SERVICE_URL=http://order-service:3000/
@@ -106,25 +130,33 @@ services:
     depends_on:
       order-service:
         condition: service_healthy
-  # ai-service:
-  #   build: ../ai-service
-  #   container_name: 'ai-service'
-  #   restart: always
-  #   ports:
-  #     - 5001:5001
-  #   healthcheck:
-  #     test: ["CMD", "wget", "-O", "/dev/null", "-q", "http://ai-service:5001/health"]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 5
-  #   environment:
-  #     - USE_AZURE_OPENAI=True # set to False if you are not using Azure OpenAI
-  #     - AZURE_OPENAI_DEPLOYMENT_NAME= # required if using Azure OpenAI
-  #     - AZURE_OPENAI_ENDPOINT= # required if using Azure OpenAI
-  #     - OPENAI_API_KEY= # always required
-  #     - OPENAI_ORG_ID= # required if using OpenAI
-  #   networks:
-  #     - backend_services
+  ai-service:
+    build: ../ai-service
+    container_name: "ai-service"
+    restart: always
+    ports:
+      - 5001:5001
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "-O",
+          "/dev/null",
+          "-q",
+          "http://ai-service:5001/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    environment:
+      - USE_AZURE_OPENAI=True # set to False if you are not using Azure OpenAI
+      - AZURE_OPENAI_DEPLOYMENT_NAME= # required if using Azure OpenAI
+      - AZURE_OPENAI_ENDPOINT= # required if using Azure OpenAI
+      - OPENAI_API_KEY= # always required
+      - OPENAI_ORG_ID= # required if using OpenAI
+    networks:
+      - backend_services
 networks:
   backend_services:
     driver: bridge
