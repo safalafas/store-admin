@@ -178,7 +178,7 @@ td {
 
 button {
   padding: 10px;
-  background-color: #005f8b;
+  background-color: #0046BE;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -187,7 +187,7 @@ button {
 }
 
 button:hover {
-  background-color: #005f8b;
+  background-color: #0046BE;
 }
 
 .action-button {
@@ -225,13 +225,13 @@ button:hover {
   padding: 10px 10px;
   border-radius: 5px;
   border: none;
-  background-color: #007acc;
+  background-color: #0046BE;
   color: #fff;
   cursor: pointer;
 }
 
 .ai-button:hover {
-  background-color: #005f8b;
+  background-color: #0046BE;
 }
 
 textarea {
